@@ -2,9 +2,18 @@ import React, { useEffect, useRef, useState } from 'react'
 import { searchPlaces, getReport } from './api.js'
 import { scoreReport } from './score.js'
 import { loadMaps, mapsAvailable } from './maps.js'
+import PdfReport from './PdfReport.jsx'
 
 const WHATSAPP = '918310719532'
 const waHref = (text) => 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text)
+// Save as PDF: the browser's print dialog. The print styles (pdf.css) swap the screen for the PDF pages.
+function printReport(name) {
+  const old = document.title
+  document.title = 'GBP audit - ' + name
+  const restore = () => { document.title = old; window.removeEventListener('afterprint', restore) }
+  window.addEventListener('afterprint', restore)
+  window.print()
+}
 const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's')
 const tone = (s, m) => (s / m >= 0.9 ? 'var(--grn)' : s / m >= 0.5 ? 'var(--amb)' : 'var(--red)')
 const ICON = {
@@ -188,9 +197,15 @@ function Report({ r, onReset }) {
     if (ids.length) setTimeout(() => document.getElementById('sec-' + ids[0].id)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start' }), 60)
   }
   return (
+    <>
     <main className="rep">
-      <h1>Business Profile Health</h1>
-      <p className="sub">Grow your local presence with a strong Google Business Profile.</p>
+      <div className="rep-top">
+        <div>
+          <h1>Business Profile Health</h1>
+          <p className="sub">Grow your local presence with a strong Google Business Profile.</p>
+        </div>
+        <button className="btn-dark" type="button" onClick={() => printReport(b.name)}>Download PDF</button>
+      </div>
       <div className="grid">
         <aside className="stack">
           <section className="card biz">
@@ -228,6 +243,8 @@ function Report({ r, onReset }) {
         </section>
       </div>
     </main>
+    <PdfReport r={r} />
+    </>
   )
 }
 

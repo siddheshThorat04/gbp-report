@@ -140,6 +140,8 @@ export function scoreReport(raw, now = Date.now()) {
   const all = sections.flatMap((s) => s.items)
   return {
     business: b, sections, notMeasured,
+    // plain facts the PDF health check reads (photos, attributes, hours)
+    facts: { photos, attributes: attrs, hasHours: Boolean(raw.has_hours), hoursPerWeek: raw.hours_per_week || 0, compHours, competitors: comps.length },
     total: Math.round((got / outOf) * 100), measuredPoints: got, measurableMax: outOf,
     critical: all.filter((i) => i.sev === 'critical').length,
     improve: all.filter((i) => i.sev === 'improve').length

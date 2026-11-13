@@ -91,3 +91,5 @@ h1{margin:0;font-size:clamp(26px,3.4vw,34px);letter-spacing:-.025em;font-weight:
 .skipped ul{margin:0;padding:0;list-style:none}.skipped li{padding:10px 0;border-top:1px solid var(--line);font-size:14px}.skipped li b{display:block}.skipped li span{color:var(--mute)}
 @media(max-width:520px){.srow{flex-direction:column}.sec-h{padding:14px;gap:12px}.items{padding:0 14px 8px}.badges{display:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.rep-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.rep-top .btn-dark{margin-top:4px}

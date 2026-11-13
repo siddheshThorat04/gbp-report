@@ -1,0 +1,137 @@
+/* PDF report (browser print). Hidden on screen. In print it replaces the page: header and the screen report are hidden. */
+.pdf { display: none }
+
+@media print {
+  @page { size: A4; margin: 12mm }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  html, body { background: #fff !important; color: #1b2a41 }
+  header, main.rep, main.land { display: none !important }
+  .pdf { display: block; font-family: Figtree, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; color: #1b2a41; line-height: 1.45 }
+  .pdf .pg { break-after: page; page-break-after: always }
+  .pdf .pg.last { break-after: auto; page-break-after: auto }
+  :where(.pdf) h1, :where(.pdf) h3, :where(.pdf) p { margin: 0 }
+  .pdf a { text-decoration: none }
+
+  /* ---------- 1. Cover: header, then a large cover card that scales with the page width (sizes in cqw) ---------- */
+  .p-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 3px solid #e0313f }
+  .p-logo { display: flex; align-items: baseline; gap: 10px }
+  .p-wm { font-weight: 800; font-size: 20px; letter-spacing: -.02em }
+  .p-wm b { color: #e0313f }
+  .p-logo .p-sub { font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #8b96a5 }
+  .p-meta { font-size: 11px; color: #8b96a5 }
+
+  .g-cover { container-type: inline-size; width: 100%; aspect-ratio: 1 / 1.3; border: 1px solid #dde4ec; border-radius: 3cqw; overflow: hidden; background: #fbfcfe; display: flex; flex-direction: column }
+  .g-banner {
+    position: relative; flex: 0 0 70cqw; overflow: hidden; padding: 8cqw 7cqw 0;
+    background: linear-gradient(135deg, #52bfe9 0%, #2b80da 42%, #0f3fb5 100%);
+  }
+  .g-banner::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 .7cqw, transparent .7cqw 2.2cqw); -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 70%); mask-image: linear-gradient(90deg, #000 0%, transparent 70%) }
+  .g-banner::after { content: ''; position: absolute; right: -14cqw; top: 6cqw; width: 58cqw; height: 58cqw; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.16), rgba(255,255,255,0) 70%) }
+  .g-banner h1 { position: relative; z-index: 1; font-size: 8.4cqw; line-height: 1.08; font-weight: 800; letter-spacing: -.02em; color: #fff }
+  .g-art { position: absolute; z-index: 1; left: 7cqw; bottom: -7cqw; width: 66cqw; height: auto }
+  .g-lower { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 5cqw; padding: 5cqw 7cqw }
+  .g-sub { max-width: 76cqw; font-size: 3cqw; line-height: 1.5; color: #66758a }
+  .g-card { padding: 3.6cqw 4.6cqw 4cqw; background: #fff; border: 1px solid #dde4ec; border-radius: 3.4cqw }
+  .g-card label { display: block; font-size: 2.2cqw; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #66758a }
+  .g-card strong { display: block; margin-top: 1cqw; font-size: 5cqw; line-height: 1.15; font-weight: 800; color: #101418 }
+  .g-loc { display: flex; align-items: flex-start; gap: 1.8cqw; margin-top: 2cqw; font-size: 2.5cqw; line-height: 1.4; color: #3a4658 }
+  .g-loc svg { flex: none; width: 2.8cqw; height: 2.8cqw; margin-top: .3cqw }
+
+  /* ---------- shared building blocks ---------- */
+  .p-h1 { font-size: 32px; line-height: 1.12; font-weight: 800; letter-spacing: -.02em; color: #132a47 }
+  .p-lead { margin: 10px 0 16px; font-size: 13.5px; line-height: 1.5; color: #66758a }
+  .p-body { font-size: 13px; line-height: 1.55; color: #2a3a52 }
+  .p-muted { font-size: 12px; color: #66758a }
+  .p-card { background: #fff; border: 1px solid #dde4ec; border-radius: 16px; padding: 16px 18px; break-inside: avoid }
+  .p-eyebrow { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #0b7a6f }
+  .p-eyebrow.gray { color: #66758a }
+  .p-eyebrow.dark { color: #132a47 }
+  .p-eyebrow.mint { color: #8fe3d7 }
+  .p-eyebrow.amberT { color: #d9922b }
+  .p-chip { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 6px 12px; border-radius: 99px }
+  .p-chip.red { background: #fbe9ea; color: #c9494f }
+  .p-chip.amber { background: #fdf1de; color: #d9922b }
+  .p-chip.teal { background: #e6f4f1; color: #0b7a6f }
+  .p-chip.wide { margin-top: 18px; padding: 8px 16px }
+  .p-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 14px; margin-top: 14px }
+  .p-two.even { grid-template-columns: 1fr 1fr }
+  .p-foot { margin-top: 14px; font-size: 10.5px; line-height: 1.5; color: #66758a }
+
+  /* ---------- 2. Summary ---------- */
+  .p-biz { display: flex; align-items: center; gap: 14px }
+  .p-avatar { flex: none; width: 52px; height: 52px; border-radius: 50%; background: #e6f4f1; color: #0b7a6f; font-weight: 800; font-size: 19px; display: grid; place-items: center }
+  .p-biz-t { flex: 1; min-width: 0 }
+  .p-biz-name { font-size: 18px; font-weight: 800; text-transform: uppercase; color: #132a47; line-height: 1.2 }
+  .p-biz-r { text-align: right; display: grid; gap: 8px; justify-items: end; font-size: 13px; color: #1b2a41 }
+  .p-pill { background: #e6f4f1; color: #0b7a6f; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 7px 13px; border-radius: 99px }
+  .p-score { display: flex; flex-direction: column; align-items: center; text-align: left }
+  .p-score .p-eyebrow { align-self: flex-start }
+  .p-ringwrap { position: relative; width: 190px; margin: 10px 0 8px }
+  .p-ring { display: block; width: 100%; height: auto }
+  .p-ringnum { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center }
+  .p-ringnum strong { font-size: 52px; line-height: 1; font-weight: 800; color: #132a47; letter-spacing: -.03em }
+  .p-ringnum span { margin-top: 4px; font-size: 10.5px; letter-spacing: .06em; color: #66758a }
+  .p-chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center }
+  .p-take hr { border: 0; border-top: 1px solid #dde4ec; margin: 14px 0 }
+  .p-take-main { margin: 10px 0 0; font-size: 15px; line-height: 1.45; font-weight: 700; color: #1b2a41 }
+  .p-take-line { margin: 7px 0 0; font-size: 12.5px; font-weight: 700; color: #1b2a41 }
+  .p-focus { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #66758a }
+  .p-dark { margin-top: 16px; background: #132a47; color: #fff; border-radius: 20px; padding: 20px 24px; break-inside: avoid }
+  .p-dark-row { display: flex; gap: 22px; align-items: center; margin: 10px 0 10px }
+  .p-big { flex: none; font-size: 46px; line-height: 1; font-weight: 800; letter-spacing: -.02em }
+  .p-big span { font-size: 15px; font-weight: 700; letter-spacing: 0; margin-left: 6px }
+  .p-dark p { font-size: 13px; line-height: 1.5; color: #dbe6f3 }
+  .p-dark small { font-size: 10.5px; color: #b8c7da }
+
+  /* ---------- 3. Scorecard ---------- */
+  .p-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+  .p-cards .p-cat:last-child:nth-child(odd) { grid-column: 1 / -1 }
+  .p-cat-h { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; text-transform: uppercase; color: #132a47 }
+  .p-bar { height: 9px; border-radius: 99px; background: #e8edf2; margin: 10px 0 12px; overflow: hidden }
+  .p-bar i { display: block; height: 100%; border-radius: 99px; background: #0e9488 }
+  .p-bar.big { height: 12px; margin: 0 }
+  .p-cat.priority .p-bar i { background: #c9494f }
+  .p-cat.improve .p-bar i { background: #d9922b }
+  .p-cat-m { display: flex; justify-content: space-between; align-items: center }
+  .p-cat-m em { font-style: normal; font-size: 12px; font-weight: 700; color: #66758a }
+  .p-cat.priority .p-cat-m em { color: #c9494f }
+  .p-cat.improve .p-cat-m em { color: #d9922b }
+  .p-cat.good .p-cat-m em { color: #0b7a6f }
+  .p-cat-d { margin-top: 12px; font-size: 12px; line-height: 1.5; color: #2a3a52 }
+  .p-cat-a { margin-top: 12px; padding-top: 10px; border-top: 1px solid #dde4ec }
+  .p-cat-a p { margin-top: 5px; font-size: 12px; line-height: 1.4; font-weight: 700; color: #132a47 }
+
+  /* ---------- 4. Profile health check ---------- */
+  .p-band { background: #132a47; color: #fff; border-radius: 16px; padding: 18px 24px }
+  .p-band h1 { font-size: 27px; line-height: 1.15; font-weight: 800; letter-spacing: -.01em }
+  .p-band p { margin-top: 4px; font-size: 12.5px; color: #c4d2e4 }
+  .p-complete { display: grid; grid-template-columns: auto 1fr 1.1fr; gap: 20px; align-items: center; margin-top: 14px; padding: 14px 22px; background: #eef3fa; border-radius: 16px }
+  .p-complete-l strong { display: block; margin-top: 2px; font-size: 38px; line-height: 1; font-weight: 800; color: #132a47 }
+  .p-complete-r p { margin-top: 4px; font-size: 11.5px; line-height: 1.45; color: #66758a }
+  .p-listhead { display: flex; justify-content: space-between; margin-top: 18px }
+  .p-rows h3 { font-size: 15px; font-weight: 800; text-transform: uppercase; color: #132a47; margin-bottom: 4px }
+  .p-row { padding: 9px 0; border-bottom: 1px solid #e3e9f0; break-inside: avoid }
+  .p-row:last-child { border-bottom: 0 }
+  .p-row-t { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; font-size: 13px; color: #132a47 }
+  .p-row-h { margin-top: 1px; font-size: 11px; color: #66758a }
+  .p-st { font-size: 11.5px; font-weight: 700; white-space: nowrap }
+  .p-st.ok { color: #0b7a6f }
+  .p-st.warn { color: #d9922b }
+  .p-st.bad { color: #c9494f }
+  .p-st.na { color: #8b96a5 }
+
+  /* ---------- 5. 30-day plan ---------- */
+  .p-weeks { display: grid; gap: 12px }
+  .p-week { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 16px 20px }
+  .p-wk { background: #132a47; color: #fff; border-radius: 14px; padding: 16px 0; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase }
+  .p-week h3 { font-size: 16px; font-weight: 800; color: #132a47 }
+  .p-week p { margin-top: 5px; font-size: 12px; line-height: 1.5; color: #2a3a52 }
+  .p-tag { align-self: start; font-size: 9.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #0b7a6f; white-space: nowrap }
+  .p-box { border: 1px solid #dde4ec; background: #f4f7fb; border-radius: 16px; padding: 16px 18px; break-inside: avoid }
+  .p-box.mint { background: #e8f4f1; border-color: #e8f4f1 }
+  .p-box p { margin-top: 8px; font-size: 12px; line-height: 1.55; color: #2a3a52 }
+  .p-cta { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-top: 14px; background: #132a47; color: #fff; border-radius: 16px; padding: 20px 24px; break-inside: avoid }
+  .p-cta b { font-size: 15px; letter-spacing: .01em; text-transform: uppercase }
+  .p-cta p { margin-top: 6px; font-size: 12px; line-height: 1.45; color: #dbe6f3 }
+  .p-cta a { flex: none; background: #e6f4f1; color: #0b7a6f; border-radius: 99px; padding: 11px 18px; font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase }
+}
