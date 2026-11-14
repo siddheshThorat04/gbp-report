@@ -25,6 +25,17 @@ const Svg = ({ children, size = 18, sw = 2.2 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
 )
 
+// Business Profile storefront icon (drawn inline, so there is no image file to host)
+const GbpIcon = () => (
+  <svg viewBox="0 0 48 48" aria-hidden="true">
+    <path d="M4 17 9 6h30l5 11c0 3.2-2.5 5.5-5.5 5.5S33 20.2 33 17c0 3.2-2.5 5.5-5.5 5.5S22 20.2 22 17c0 3.2-2.5 5.5-5.5 5.5S11 20.2 11 17c0 3.2-2.5 5.5-5.5 5.5S4 20.2 4 17z" fill="#4285f4" />
+    <path d="M8 25h32v15a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="#8ab4f8" />
+    <rect x="19" y="29" width="10" height="13" rx="1" fill="#fff" />
+    <rect x="11" y="29" width="5" height="6" rx="1" fill="#fff" />
+    <rect x="32" y="29" width="5" height="6" rx="1" fill="#fff" />
+  </svg>
+)
+
 function Header() {
   return (
     <header>
@@ -92,8 +103,18 @@ function Landing({ onPick, error }) {
   }
   return (
     <main className="land">
-      <h1>Business Profile Health</h1>
+      <div className="land-top">
+        <div className="land-brand">
+          <b>mmore.works</b>
+          <span>Free Google Business Profile audit</span>
+        </div>
+        <span className="step-pill">Step 1 of 3</span>
+      </div>
+
+      <p className="land-wordmark">mmore<i>.</i>works</p>
+      <h1>See how your business shows up on <span className="gbp" role="img" aria-label="Business Profile"><GbpIcon /></span></h1>
       <p className="lead">Let’s help you find <b>simple actions</b> for your Google Business Profile that help more nearby clients discover your business.</p>
+
       <div className="card search">
         {mode === 'widget' ? (
           <>
@@ -123,7 +144,8 @@ function Landing({ onPick, error }) {
           </button>
         )}
       </div>
-      <p className="fine">Free. Uses only public Google data. No login needed.</p>
+
+      <p className="land-foot">Powered by <b>mmore.works</b> · Free. Uses only public Google data. No login needed.</p>
     </main>
   )
 }
@@ -138,7 +160,7 @@ function Gauge({ score }) {
   return (
     <div className="gauge">
       <svg viewBox="0 0 200 170" role="img" aria-label={`Score ${score} out of 100`}>
-        <defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#ee4b55" /><stop offset=".55" stopColor="#a86bb5" /><stop offset="1" stopColor="#3f8fe0" /></linearGradient></defs>
+        <defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#ff5d6c" /><stop offset=".55" stopColor="#e0142a" /><stop offset="1" stopColor="#8f0b1c" /></linearGradient></defs>
         <path className="arc" d={d} stroke="var(--track)" pathLength="100" />
         <path className="arc prog" d={d} stroke="url(#g)" pathLength="100" strokeDasharray={`${shown} 100`} />
       </svg>
@@ -262,7 +284,8 @@ export default function App() {
   }
   return (
     <div ref={top}>
-      <Header />
+      {/* the landing page has its own top row, so the global header is only for the other stages */}
+      {stage !== 'search' && <Header />}
       {stage === 'search' && <Landing onPick={pick} error={error} />}
       {stage === 'loading' && <main className="land"><div className="card load"><div className="spin" /><p>Checking <b>{name}</b> on Google…</p></div></main>}
       {stage === 'report' && report && <Report r={report} onReset={() => { setReport(null); setStage('search') }} />}
