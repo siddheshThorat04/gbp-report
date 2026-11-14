@@ -122,8 +122,8 @@
 
   /* ---------- 5. 30-day plan ---------- */
   .p-weeks { display: grid; gap: 12px }
-  .p-week { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 16px 20px }
-  .p-wk { background: #101012; color: #fff; border-radius: 14px; padding: 16px 0; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase }
+  .p-week { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 16px 20px }
+  .p-wk { background: #101012; color: #fff; border-radius: 14px; padding: 14px 8px; line-height: 1.5; text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase }
   .p-week h3 { font-size: 16px; font-weight: 800; color: #101012 }
   .p-week p { margin-top: 5px; font-size: 12px; line-height: 1.5; color: #3a3a3f }
   .p-tag { align-self: start; font-size: 9.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #b80f22; white-space: nowrap }
